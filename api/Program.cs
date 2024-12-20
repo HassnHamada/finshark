@@ -11,6 +11,9 @@ builder.Services.AddOpenApi();
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // builder.Services.AddDbContext<ApplicationDBContext>(options => {
 //     var connetionString = builder.Configuration.GetConnectionString("DefaultConnection");
 //     options.UseMySQL(connetionString, ServerVersion.AutoDetect(connetionString).ToString());
@@ -23,6 +26,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
