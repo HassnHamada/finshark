@@ -24,6 +24,10 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var comments = await _commentRepo.GetAllAsync();
             var commentDto = comments.Select(x => x.ToDto());
             return Ok(commentDto);
@@ -31,6 +35,10 @@ namespace api.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var comment = await _commentRepo.GetByIdAsync(id);
             if (comment == null)
             {
@@ -41,6 +49,11 @@ namespace api.Controllers
         [HttpPost("{stockId:int}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, [FromBody] CreateCommentDto commentDto)
         {
+            Console.WriteLine(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (!await _stockRepo.Exists(stockId))
             {
                 return NotFound();
@@ -52,6 +65,10 @@ namespace api.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentDto commentDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var comment = await _commentRepo.UpdateAsync(id, commentDto.ToCommentFromUpdate());
             if (comment == null)
             {
@@ -63,6 +80,10 @@ namespace api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var comment = await _commentRepo.DeleteAsync(id);
             if (comment == null)
             {
