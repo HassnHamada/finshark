@@ -10,7 +10,7 @@ builder.Services.AddOpenApi();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
+builder.Services.AddControllers();
 // builder.Services.AddDbContext<ApplicationDBContext>(options => {
 //     var connetionString = builder.Configuration.GetConnectionString("DefaultConnection");
 //     options.UseMySQL(connetionString, ServerVersion.AutoDetect(connetionString).ToString());
@@ -45,7 +45,7 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
-
+app.MapControllers();
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
