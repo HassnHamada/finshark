@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Stock;
@@ -47,10 +48,17 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            return await _context.Stocks.Include(s => s.Comments)
+            var stocks = _context.Stocks.Include(s => s.Comments)
             .Where(s => string.IsNullOrWhiteSpace(query.CompanyName) || s.CompanyName.Contains(query.CompanyName))
-            .Where(s => string.IsNullOrWhiteSpace(query.Symbol) || s.Symbol.Contains(query.Symbol))
-            .ToListAsync();
+            .Where(s => string.IsNullOrWhiteSpace(query.Symbol) || s.Symbol.Contains(query.Symbol)).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
+                {
+                    stocks = query.IsDecsending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
+                }
+            }
+            return await stocks.ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
