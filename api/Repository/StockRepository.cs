@@ -48,7 +48,7 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            var stocks = _context.Stocks.Include(s => s.Comments)
+            var stocks = _context.Stocks.Include(s => s.Comments).ThenInclude(a => a.AppUser)
             .Where(s => string.IsNullOrWhiteSpace(query.CompanyName) || s.CompanyName.Contains(query.CompanyName))
             .Where(s => string.IsNullOrWhiteSpace(query.Symbol) || s.Symbol.Contains(query.Symbol)).AsQueryable();
             if (!string.IsNullOrWhiteSpace(query.SortBy))
