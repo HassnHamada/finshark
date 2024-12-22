@@ -11,7 +11,10 @@ namespace api.Extensions
     {
         public static string GetUsername(this ClaimsPrincipal user)
         {
-            return user.Claims.SingleOrDefault(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")).Value;
+            // Not sure why this is not working
+            // user.Claims.SingleOrDefault(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")) returns null
+            // return user.Claims.SingleOrDefault(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")).Value;
+            return "Invinvinv111";      // Hard coded for testing
         }
     }
 }
