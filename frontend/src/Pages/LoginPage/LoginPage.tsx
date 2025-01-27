@@ -36,7 +36,7 @@ const LoginPage = (props: Props) => {
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(handleLogin)}>
                             <div>
                                 <label
-                                    htmlFor="email"
+                                    htmlFor="username"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >
                                     Username
